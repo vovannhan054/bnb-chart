@@ -11,60 +11,19 @@
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  :root{
-    --bg:#0d0d0f;
-    --surface:#16161a;
-    --border:#2a2a30;
-    --text:#e8e8ed;
-    --muted:#6e6e7a;
-    --up:#26a69a;
-    --down:#ef5350;
-    --accent:#f0b90b;
-  }
+  :root{--bg:#0d0d0f;--surface:#16161a;--border:#2a2a30;--text:#e8e8ed;--muted:#6e6e7a;--up:#26a69a;--down:#ef5350;--accent:#f0b90b}
   body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;min-height:100vh;overflow-x:hidden}
-
-  /* Header */
-  .header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(13,13,15,0.92);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border-bottom:0.5px solid var(--border);
-    padding:env(safe-area-inset-top,0) 16px 0;
-  }
+  .header{position:sticky;top:0;z-index:100;background:rgba(13,13,15,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);padding:env(safe-area-inset-top,0) 16px 0}
   .header-inner{display:flex;align-items:center;justify-content:space-between;height:52px}
   .logo{font-size:17px;font-weight:600;letter-spacing:-0.3px;color:var(--accent)}
-
-  /* Ticker tabs */
-  .ticker-scroll{
-    display:flex;gap:8px;overflow-x:auto;padding:10px 16px;
-    scrollbar-width:none;-ms-overflow-style:none;
-  }
+  .ticker-scroll{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
   .ticker-scroll::-webkit-scrollbar{display:none}
-  .ticker-btn{
-    flex-shrink:0;
-    background:var(--surface);
-    border:0.5px solid var(--border);
-    border-radius:20px;
-    padding:6px 14px;
-    font-size:13px;font-weight:500;
-    color:var(--muted);
-    cursor:pointer;
-    transition:all .15s;
-    white-space:nowrap;
-    display:flex;align-items:center;gap:6px;
-  }
-  .ticker-btn.active{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#000;
-  }
+  .ticker-btn{flex-shrink:0;background:var(--surface);border:0.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+  .ticker-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
   .ticker-btn .chg{font-size:11px;opacity:.8}
   .ticker-btn.up .chg{color:var(--up)}
   .ticker-btn.down .chg{color:var(--down)}
   .ticker-btn.active .chg{color:rgba(0,0,0,0.6)}
-
-  /* Price hero */
   .price-hero{padding:12px 16px 8px}
   .pair-name{font-size:13px;color:var(--muted);margin-bottom:4px;letter-spacing:.3px}
   .price-row{display:flex;align-items:baseline;gap:12px}
@@ -78,68 +37,51 @@
   .stat{display:flex;flex-direction:column;gap:2px}
   .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
   .stat-val{font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
-
-  /* Interval selector */
-  .interval-row{
-    display:flex;gap:4px;padding:8px 16px;
-    overflow-x:auto;scrollbar-width:none;
-  }
+  .interval-row{display:flex;gap:4px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
   .interval-row::-webkit-scrollbar{display:none}
-  .interval-btn{
-    flex-shrink:0;
-    background:transparent;border:none;
-    padding:5px 10px;border-radius:8px;
-    font-size:12px;font-weight:500;
-    color:var(--muted);cursor:pointer;
-    transition:all .15s;
-  }
+  .interval-btn{flex-shrink:0;background:transparent;border:none;padding:5px 10px;border-radius:8px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
   .interval-btn.active{background:var(--surface);color:var(--text);border:0.5px solid var(--border)}
+  #chart-container{width:100%;height:calc(100vw * 0.65);min-height:260px;max-height:420px;padding:0 4px}
 
-  /* Chart */
-  #chart-container{
-    width:100%;
-    height:calc(100vw * 0.65);
-    min-height:260px;max-height:420px;
-    padding:0 4px;
-  }
+  /* Alert section */
+  .section{border-top:0.5px solid var(--border);padding:16px}
+  .section-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+  .alert-form{display:flex;gap:8px;margin-bottom:10px}
+  .alert-select{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none;min-width:90px}
+  .alert-input{flex:1;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none}
+  .alert-input::placeholder{color:var(--muted)}
+  .alert-input:focus,.alert-select:focus{border-color:var(--accent)}
+  .alert-btn{background:var(--accent);border:none;border-radius:10px;padding:10px 16px;color:#000;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .alert-list{display:flex;flex-direction:column;gap:8px}
+  .alert-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px}
+  .alert-info{display:flex;flex-direction:column;gap:3px}
+  .alert-pair{font-size:13px;font-weight:600}
+  .alert-cond{font-size:12px;color:var(--muted)}
+  .alert-status{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500}
+  .alert-status.active{background:rgba(38,166,154,.15);color:var(--up)}
+  .alert-status.triggered{background:rgba(240,185,11,.15);color:var(--accent)}
+  .alert-del{background:rgba(239,83,80,.1);border:none;border-radius:8px;padding:6px 10px;color:var(--down);font-size:12px;cursor:pointer}
+  .push-banner{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .push-text{font-size:13px;color:var(--muted);line-height:1.4}
+  .push-btn{background:var(--accent);border:none;border-radius:8px;padding:8px 14px;color:#000;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+  .push-ok{font-size:13px;color:var(--up);display:flex;align-items:center;gap:6px}
 
   /* Add coin */
-  .add-section{padding:16px;border-top:0.5px solid var(--border);margin-top:4px}
   .add-row{display:flex;gap:8px}
-  .add-input{
-    flex:1;background:var(--surface);border:0.5px solid var(--border);
-    border-radius:10px;padding:10px 14px;
-    color:var(--text);font-size:14px;outline:none;
-    -webkit-appearance:none;
-  }
+  .add-input{flex:1;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none}
   .add-input::placeholder{color:var(--muted)}
   .add-input:focus{border-color:var(--accent)}
-  .add-btn{
-    background:var(--accent);border:none;border-radius:10px;
-    padding:10px 16px;color:#000;font-size:14px;font-weight:600;
-    cursor:pointer;white-space:nowrap;
-  }
+  .add-btn{background:var(--accent);border:none;border-radius:10px;padding:10px 16px;color:#000;font-size:14px;font-weight:600;cursor:pointer}
   .add-hint{font-size:12px;color:var(--muted);margin-top:6px}
 
-  /* Status */
   .status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block;margin-right:5px}
   .status-dot.live{background:var(--up);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
   .status-text{font-size:12px;color:var(--muted)}
-
-  /* Bottom safe area */
-  .bottom-pad{height:env(safe-area-inset-bottom,16px)}
-
-  /* Toast */
-  .toast{
-    position:fixed;bottom:calc(env(safe-area-inset-bottom,16px) + 16px);
-    left:50%;transform:translateX(-50%) translateY(80px);
-    background:var(--surface);border:0.5px solid var(--border);
-    border-radius:12px;padding:10px 18px;font-size:13px;
-    color:var(--text);transition:transform .3s;z-index:999;white-space:nowrap;
-    box-shadow:0 4px 24px rgba(0,0,0,.5);
-  }
+  .bottom-pad{height:calc(env(safe-area-inset-bottom,16px) + 16px)}
+  .toast{position:fixed;bottom:calc(env(safe-area-inset-bottom,16px) + 16px);left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:10px 18px;font-size:13px;color:var(--text);transition:transform .3s;z-index:999;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5)}
   .toast.show{transform:translateX(-50%) translateY(0)}
+  .empty-alerts{font-size:13px;color:var(--muted);text-align:center;padding:12px 0}
 </style>
 </head>
 <body>
@@ -163,18 +105,9 @@
     <div class="price-change" id="price-change">--%</div>
   </div>
   <div class="price-stats">
-    <div class="stat">
-      <span class="stat-label">24h High</span>
-      <span class="stat-val" id="stat-high">--</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">24h Low</span>
-      <span class="stat-val" id="stat-low">--</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Volume</span>
-      <span class="stat-val" id="stat-vol">--</span>
-    </div>
+    <div class="stat"><span class="stat-label">24h High</span><span class="stat-val" id="stat-high">--</span></div>
+    <div class="stat"><span class="stat-label">24h Low</span><span class="stat-val" id="stat-low">--</span></div>
+    <div class="stat"><span class="stat-label">Volume</span><span class="stat-val" id="stat-vol">--</span></div>
   </div>
 </div>
 
@@ -190,33 +123,62 @@
 
 <div id="chart-container"></div>
 
-<div class="add-section">
+<!-- Alert section -->
+<div class="section">
+  <div class="section-title">Cảnh báo giá</div>
+  <div id="push-banner">
+    <div class="push-banner">
+      <span class="push-text">Bật thông báo để nhận alert khi giá chạm mức</span>
+      <button class="push-btn" id="push-btn" onclick="requestPush()">Bật thông báo</button>
+    </div>
+  </div>
+  <div class="alert-form">
+    <select class="alert-select" id="alert-pair-sel"></select>
+    <select class="alert-select" id="alert-dir">
+      <option value="above">≥ Trên</option>
+      <option value="below">≤ Dưới</option>
+    </select>
+    <input class="alert-input" id="alert-price" type="number" placeholder="Giá ($)" inputmode="decimal">
+    <button class="alert-btn" onclick="addAlert()">+</button>
+  </div>
+  <div class="alert-list" id="alert-list"></div>
+</div>
+
+<!-- Add coin -->
+<div class="section">
+  <div class="section-title">Thêm coin</div>
   <div class="add-row">
-    <input class="add-input" id="add-input" placeholder="Thêm mã (vd: ETH, SOL, XRP...)" autocapitalize="characters" autocorrect="off" spellcheck="false">
+    <input class="add-input" id="add-input" placeholder="ETH, SOL, XRP..." autocapitalize="characters" autocorrect="off" spellcheck="false">
     <button class="add-btn" id="add-btn">Thêm</button>
   </div>
-  <div class="add-hint">Nhập ký hiệu coin — tự động ghép với USDT</div>
+  <div class="add-hint">Tự động ghép USDT</div>
 </div>
 
 <div class="bottom-pad"></div>
 <div class="toast" id="toast"></div>
 
 <script>
-const PAIRS = ['BTCUSDT','BNBUSDT'];
-let pairs = [...PAIRS];
+const VAPID_PUBLIC = 'BOW_TP3Po0vEm1NAmR4UB2FslSvL_iQsgvvD02qxeVu4MPb3_2sxEzc7XBD1YRoa2Y91mFz7IBQhXMFvZ7ANvXI';
+const WORKER_URL = 'REPLACE_WORKER_URL'; // sẽ điền sau
+
+let pairs = JSON.parse(localStorage.getItem('pairs')||'["BTCUSDT","BNBUSDT"]');
+let alerts = JSON.parse(localStorage.getItem('alerts')||'[]');
 let activePair = pairs[0];
 let activeInterval = '1h';
 let chart, candleSeries;
-let wsPrice = null;
-let wsKline = null;
-let ticker24h = {};
+let wsPrice=null, wsKline=null;
+let ticker24h={};
+let pushSub=null;
+let currentPrices={};
 
-function showToast(msg, ms=2200){
+// ---- Toast ----
+function showToast(msg,ms=2200){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),ms);
 }
 
+// ---- Format ----
 function fmt(n,dec=2){
   if(n===undefined||n===null||isNaN(n))return '--';
   const num=parseFloat(n);
@@ -224,7 +186,6 @@ function fmt(n,dec=2){
   if(num>=1)return num.toFixed(dec);
   return num.toFixed(6);
 }
-
 function fmtVol(v){
   const n=parseFloat(v);
   if(n>=1e9)return (n/1e9).toFixed(2)+'B';
@@ -233,68 +194,139 @@ function fmtVol(v){
   return n.toFixed(0);
 }
 
-function renderTickers(){
-  const el=document.getElementById('ticker-scroll');
-  el.innerHTML='';
-  pairs.forEach(p=>{
-    const d=ticker24h[p]||{};
-    const chg=parseFloat(d.P||0);
-    const btn=document.createElement('button');
-    btn.className='ticker-btn'+(p===activePair?' active':'')+(chg>=0?' up':' down');
-    btn.dataset.pair=p;
-    const label=p.replace('USDT','');
-    btn.innerHTML=`<span>${label}</span><span class="chg">${chg>=0?'+':''}${chg.toFixed(2)}%</span>`;
-    btn.addEventListener('click',()=>switchPair(p));
-    el.appendChild(btn);
+// ---- Push Notification ----
+function urlBase64ToUint8Array(base64String){
+  const padding='='.repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');
+  const rawData=window.atob(base64);
+  return Uint8Array.from([...rawData].map(c=>c.charCodeAt(0)));
+}
+
+async function requestPush(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window)){
+    showToast('Trình duyệt này không hỗ trợ push notification');return;
+  }
+  const perm=await Notification.requestPermission();
+  if(perm!=='granted'){showToast('Bạn cần cho phép thông báo');return;}
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    pushSub=await reg.pushManager.subscribe({
+      userVisibleOnly:true,
+      applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC)
+    });
+    localStorage.setItem('pushSub',JSON.stringify(pushSub));
+    // Gửi subscription lên Worker
+    if(WORKER_URL!=='REPLACE_WORKER_URL'){
+      await fetch(WORKER_URL+'/subscribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({subscription:pushSub,alerts})
+      });
+    }
+    renderPushBanner(true);
+    showToast('Đã bật thông báo!');
+  }catch(e){
+    showToast('Không bật được: '+e.message);
+  }
+}
+
+function renderPushBanner(enabled){
+  const el=document.getElementById('push-banner');
+  if(enabled){
+    el.innerHTML='<div class="push-ok">✓ Thông báo đã bật — alerts sẽ đến kể cả khi đóng app</div>';
+  }else{
+    el.innerHTML=`<div class="push-banner"><span class="push-text">Bật thông báo để nhận alert khi giá chạm mức</span><button class="push-btn" onclick="requestPush()">Bật thông báo</button></div>`;
+  }
+}
+
+async function checkPushStatus(){
+  if(!('serviceWorker' in navigator))return;
+  const reg=await navigator.serviceWorker.ready;
+  const sub=await reg.pushManager.getSubscription();
+  if(sub){pushSub=sub;renderPushBanner(true);}
+}
+
+// ---- Alerts ----
+function savePairs(){localStorage.setItem('pairs',JSON.stringify(pairs))}
+function saveAlerts(){
+  localStorage.setItem('alerts',JSON.stringify(alerts));
+  // Sync lên worker nếu có subscription
+  if(pushSub&&WORKER_URL!=='REPLACE_WORKER_URL'){
+    fetch(WORKER_URL+'/subscribe',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({subscription:pushSub,alerts})
+    }).catch(()=>{});
+  }
+}
+
+function addAlert(){
+  const pair=document.getElementById('alert-pair-sel').value;
+  const dir=document.getElementById('alert-dir').value;
+  const price=parseFloat(document.getElementById('alert-price').value);
+  if(!price||isNaN(price)){showToast('Nhập giá hợp lệ');return;}
+  alerts.push({id:Date.now(),pair,dir,price,active:true});
+  saveAlerts();
+  document.getElementById('alert-price').value='';
+  renderAlerts();
+  showToast(`Alert đặt: ${pair.replace('USDT','')} ${dir==='above'?'≥':'≤'} $${fmt(price)}`);
+}
+
+function deleteAlert(id){
+  alerts=alerts.filter(a=>a.id!==id);
+  saveAlerts();
+  renderAlerts();
+}
+
+function renderAlerts(){
+  const el=document.getElementById('alert-list');
+  if(!alerts.length){el.innerHTML='<div class="empty-alerts">Chưa có alert nào</div>';return;}
+  el.innerHTML=alerts.map(a=>`
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-pair">${a.pair.replace('USDT','/USDT')}</span>
+        <span class="alert-cond">${a.dir==='above'?'Khi giá ≥':'Khi giá ≤'} $${fmt(a.price)}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="alert-status ${a.active?'active':'triggered'}">${a.active?'Đang chờ':'Đã kích hoạt'}</span>
+        <button class="alert-del" onclick="deleteAlert(${a.id})">Xóa</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAlertPairSelect(){
+  const sel=document.getElementById('alert-pair-sel');
+  sel.innerHTML=pairs.map(p=>`<option value="${p}">${p.replace('USDT','')}</option>`).join('');
+}
+
+// Check alerts locally (in-app notification fallback)
+function checkAlerts(pair, price){
+  alerts.forEach(a=>{
+    if(!a.active||a.pair!==pair)return;
+    const hit=(a.dir==='above'&&price>=a.price)||(a.dir==='below'&&price<=a.price);
+    if(hit){
+      a.active=false;
+      saveAlerts();
+      renderAlerts();
+      // In-app notification
+      if(Notification.permission==='granted'){
+        new Notification(`◈ CryptoChart Alert`,{
+          body:`${pair.replace('USDT','')} đã chạm $${fmt(price)} (mức ${a.dir==='above'?'≥':'≤'} $${fmt(a.price)})`,
+          icon:'/icon-192.png'
+        });
+      }
+      showToast(`🔔 ${pair.replace('USDT','')} chạm $${fmt(price)}!`,4000);
+    }
   });
 }
 
-function updatePriceHero(data){
-  const price=parseFloat(data.c||data.lastPrice||0);
-  const chg=parseFloat(data.P||data.priceChangePercent||0);
-  const high=parseFloat(data.h||data.highPrice||0);
-  const low=parseFloat(data.l||data.lowPrice||0);
-  const vol=parseFloat(data.v||data.volume||0);
-  const isUp=chg>=0;
-
-  document.getElementById('pair-name').textContent=activePair.replace('USDT','/USDT');
-  const pm=document.getElementById('price-main');
-  pm.textContent='$'+fmt(price);
-  pm.className='price-main '+(isUp?'up':'down');
-  const pc=document.getElementById('price-change');
-  pc.textContent=(isUp?'+':'')+chg.toFixed(2)+'%';
-  pc.className='price-change '+(isUp?'up':'down');
-  document.getElementById('stat-high').textContent='$'+fmt(high);
-  document.getElementById('stat-low').textContent='$'+fmt(low);
-  document.getElementById('stat-vol').textContent=fmtVol(vol);
-}
-
-async function fetch24h(){
-  try{
-    const r=await fetch(`https://api.binance.com/api/v3/ticker/24hr`);
-    const arr=await r.json();
-    arr.forEach(d=>{if(pairs.includes(d.symbol))ticker24h[d.symbol]=d});
-    renderTickers();
-    if(ticker24h[activePair])updatePriceHero(ticker24h[activePair]);
-  }catch(e){console.warn('24h fetch err',e)}
-}
-
-async function fetchKlines(){
-  try{
-    const r=await fetch(`https://api.binance.com/api/v3/klines?symbol=${activePair}&interval=${activeInterval}&limit=300`);
-    const arr=await r.json();
-    const data=arr.map(k=>({time:k[0]/1000,open:parseFloat(k[1]),high:parseFloat(k[2]),low:parseFloat(k[3]),close:parseFloat(k[4])}));
-    candleSeries.setData(data);
-    chart.timeScale().fitContent();
-  }catch(e){console.warn('kline fetch err',e)}
-}
-
+// ---- Chart ----
 function initChart(){
   const container=document.getElementById('chart-container');
   container.innerHTML='';
   chart=LightweightCharts.createChart(container,{
-    width:container.clientWidth,
-    height:container.clientHeight,
+    width:container.clientWidth,height:container.clientHeight,
     layout:{background:{color:'#0d0d0f'},textColor:'#6e6e7a'},
     grid:{vertLines:{color:'#1e1e24'},horzLines:{color:'#1e1e24'}},
     crosshair:{mode:LightweightCharts.CrosshairMode.Normal},
@@ -306,93 +338,108 @@ function initChart(){
     borderUpColor:'#26a69a',borderDownColor:'#ef5350',
     wickUpColor:'#26a69a',wickDownColor:'#ef5350',
   });
-  new ResizeObserver(()=>{
-    if(chart)chart.resize(container.clientWidth,container.clientHeight);
-  }).observe(container);
+  new ResizeObserver(()=>{if(chart)chart.resize(container.clientWidth,container.clientHeight)}).observe(container);
+}
+
+// ---- Tickers ----
+function renderTickers(){
+  const el=document.getElementById('ticker-scroll');
+  el.innerHTML='';
+  pairs.forEach(p=>{
+    const d=ticker24h[p]||{};
+    const chg=parseFloat(d.P||0);
+    const btn=document.createElement('button');
+    btn.className='ticker-btn'+(p===activePair?' active':'')+(chg>=0?' up':' down');
+    btn.dataset.pair=p;
+    btn.innerHTML=`<span>${p.replace('USDT','')}</span><span class="chg">${chg>=0?'+':''}${chg.toFixed(2)}%</span>`;
+    btn.addEventListener('click',()=>switchPair(p));
+    el.appendChild(btn);
+  });
+}
+
+function updatePriceHero(data){
+  const price=parseFloat(data.c||data.lastPrice||0);
+  const chg=parseFloat(data.P||data.priceChangePercent||0);
+  currentPrices[activePair]=price;
+  checkAlerts(activePair,price);
+  const isUp=chg>=0;
+  document.getElementById('pair-name').textContent=activePair.replace('USDT','/USDT');
+  const pm=document.getElementById('price-main');
+  pm.textContent='$'+fmt(price);pm.className='price-main '+(isUp?'up':'down');
+  const pc=document.getElementById('price-change');
+  pc.textContent=(isUp?'+':'')+chg.toFixed(2)+'%';pc.className='price-change '+(isUp?'up':'down');
+  document.getElementById('stat-high').textContent='$'+fmt(data.h||data.highPrice);
+  document.getElementById('stat-low').textContent='$'+fmt(data.l||data.lowPrice);
+  document.getElementById('stat-vol').textContent=fmtVol(data.v||data.volume);
+}
+
+async function fetch24h(){
+  try{
+    const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
+    const arr=await r.json();
+    arr.forEach(d=>{if(pairs.includes(d.symbol))ticker24h[d.symbol]=d});
+    renderTickers();
+    if(ticker24h[activePair])updatePriceHero(ticker24h[activePair]);
+  }catch(e){}
+}
+
+async function fetchKlines(){
+  try{
+    const r=await fetch(`https://api.binance.com/api/v3/klines?symbol=${activePair}&interval=${activeInterval}&limit=300`);
+    const arr=await r.json();
+    candleSeries.setData(arr.map(k=>({time:k[0]/1000,open:parseFloat(k[1]),high:parseFloat(k[2]),low:parseFloat(k[3]),close:parseFloat(k[4])})));
+    chart.timeScale().fitContent();
+  }catch(e){}
 }
 
 function connectPriceWS(){
   if(wsPrice){try{wsPrice.close()}catch(e){}}
   const streams=pairs.map(p=>p.toLowerCase()+'@ticker').join('/');
   wsPrice=new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
-  wsPrice.onopen=()=>{
-    document.getElementById('dot').className='status-dot live';
-    document.getElementById('status-text').textContent='Live';
-  };
+  wsPrice.onopen=()=>{document.getElementById('dot').className='status-dot live';document.getElementById('status-text').textContent='Live'};
   wsPrice.onmessage=e=>{
-    const msg=JSON.parse(e.data);
-    const d=msg.data;
-    if(!d)return;
-    ticker24h[d.s]=d;
-    renderTickers();
+    const msg=JSON.parse(e.data);const d=msg.data;if(!d)return;
+    ticker24h[d.s]=d;renderTickers();
     if(d.s===activePair)updatePriceHero(d);
   };
-  wsPrice.onclose=()=>{
-    document.getElementById('dot').className='status-dot';
-    document.getElementById('status-text').textContent='Mất kết nối';
-    setTimeout(connectPriceWS,3000);
-  };
+  wsPrice.onclose=()=>{document.getElementById('dot').className='status-dot';document.getElementById('status-text').textContent='Mất kết nối';setTimeout(connectPriceWS,3000)};
 }
 
 function connectKlineWS(){
   if(wsKline){try{wsKline.close()}catch(e){}}
   wsKline=new WebSocket(`wss://stream.binance.com:9443/ws/${activePair.toLowerCase()}@kline_${activeInterval}`);
   wsKline.onmessage=e=>{
-    const msg=JSON.parse(e.data);
-    const k=msg.k;
-    if(!k)return;
-    candleSeries.update({
-      time:k.t/1000,
-      open:parseFloat(k.o),high:parseFloat(k.H),
-      low:parseFloat(k.l),close:parseFloat(k.c)
-    });
+    const msg=JSON.parse(e.data);const k=msg.k;if(!k)return;
+    candleSeries.update({time:k.t/1000,open:parseFloat(k.o),high:parseFloat(k.H),low:parseFloat(k.l),close:parseFloat(k.c)});
   };
   wsKline.onclose=()=>setTimeout(connectKlineWS,3000);
 }
 
-function switchPair(p){
-  activePair=p;
-  renderTickers();
-  if(ticker24h[p])updatePriceHero(ticker24h[p]);
-  fetchKlines();
-  connectKlineWS();
-}
-
-function switchInterval(i){
-  activeInterval=i;
-  document.querySelectorAll('.interval-btn').forEach(b=>{
-    b.classList.toggle('active',b.dataset.i===i);
-  });
-  fetchKlines();
-  connectKlineWS();
-}
+function switchPair(p){activePair=p;renderTickers();if(ticker24h[p])updatePriceHero(ticker24h[p]);fetchKlines();connectKlineWS()}
+function switchInterval(i){activeInterval=i;document.querySelectorAll('.interval-btn').forEach(b=>b.classList.toggle('active',b.dataset.i===i));fetchKlines();connectKlineWS()}
 
 async function addPair(){
   const input=document.getElementById('add-input');
   const val=input.value.trim().toUpperCase().replace(/USDT$/,'');
-  if(!val){showToast('Nhập ký hiệu coin trước nhé');return}
+  if(!val){showToast('Nhập ký hiệu coin');return}
   const sym=val+'USDT';
   if(pairs.includes(sym)){showToast(`${sym} đã có rồi`);input.value='';return}
   try{
     const r=await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${sym}`);
     if(!r.ok)throw new Error();
-    pairs.push(sym);
-    input.value='';
-    await fetch24h();
-    connectPriceWS();
-    switchPair(sym);
+    pairs.push(sym);savePairs();input.value='';
+    renderAlertPairSelect();
+    await fetch24h();connectPriceWS();switchPair(sym);
     showToast(`Đã thêm ${sym}`);
-  }catch(e){
-    showToast(`Không tìm thấy ${sym} trên Binance`);
-  }
+  }catch(e){showToast(`Không tìm thấy ${sym} trên Binance`)}
 }
 
-document.getElementById('interval-row').addEventListener('click',e=>{
-  const btn=e.target.closest('.interval-btn');
-  if(btn)switchInterval(btn.dataset.i);
-});
+document.getElementById('interval-row').addEventListener('click',e=>{const btn=e.target.closest('.interval-btn');if(btn)switchInterval(btn.dataset.i)});
 document.getElementById('add-btn').addEventListener('click',addPair);
 document.getElementById('add-input').addEventListener('keydown',e=>{if(e.key==='Enter')addPair()});
+
+// Register Service Worker
+if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{})}
 
 // Boot
 initChart();
@@ -400,6 +447,9 @@ fetch24h();
 fetchKlines();
 connectPriceWS();
 connectKlineWS();
+renderAlerts();
+renderAlertPairSelect();
+checkPushStatus();
 </script>
 </body>
 </html>
